@@ -86,5 +86,4 @@ def main():
         "Check the code at https://github.com/KTS-o7/stockManager"
     )
 
-
 main()
