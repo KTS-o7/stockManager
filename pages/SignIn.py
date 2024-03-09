@@ -20,7 +20,7 @@ mysql_config = {
 
 conn = mysql.connector.connect(**mysql_config)
 cursor = conn.cursor()
-conn.reconnect(mysql_config)
+#conn.reconnect(mysql_config)
 
 def authenticate(username, password):
     # Fetch the hashed password from the database
@@ -66,17 +66,19 @@ def show(session_state: SessionState):
     if session_state.register:
         st.subheader("Register")
         reg_username = st.text_input("New Username")
-        if(reg_username == ''):
-            st.warning("Please enter a username")
         reg_password = st.text_input("New Password", type="password")
         reg_name = st.text_input("Name")
         reg_email = st.text_input("Email")
         reg_phone_number = st.text_input("Phone Number")
         if st.button("Submit Registration"):
-            if register(reg_username, reg_password, reg_name, reg_email, reg_phone_number):
+            if reg_username != "" and register(reg_username, reg_password, reg_name, reg_email, reg_phone_number) and reg_password != "":
                 st.success("Registration successful!")
                 if(session_state.register):
                     session_state.register = False
+            elif reg_username == "":
+                st.error("Please enter a username!")
+            elif reg_password == "":
+                st.error("Please enter a password!")
             else:
                 st.error("Username already exists!")
                 if(session_state.register):
@@ -93,8 +95,12 @@ def show(session_state: SessionState):
                 st.success("You have successfully logged in!")
                 if(session_state.option):
                     session_state.option = False
+                cursor.execute("SELECT Name FROM USER WHERE UID = %s", (username,))
+                result = cursor.fetchone()
+                session_state.clientName = result[0]
+                print(session_state.clientName)
                 with st.spinner("Redirecting..."):
-                    time.sleep(5)
+                    time.sleep(2)
                     st.switch_page("./Home.py")
             else:
                 st.error("Invalid username or password")
@@ -111,14 +117,14 @@ def show(session_state: SessionState):
     # Example of using st.connection to cache database queries
    # Example of using st.connection to cache database queries
     #conn = st.connection('mysql',type='sql')
-    cursor.execute("SELECT * FROM USER")
-    df = cursor.fetchall()
+    #cursor.execute("SELECT * FROM USER")
+    #df = cursor.fetchall()
     #print(df)
     #for row in df:
         #st.write(f"{row[0]} - {row[1]} - {row[2]} - {row[3]}")
 
 # Call the show() function to render the content
-session_state = SessionState.get(is_authenticated=False, option=None, register=None, username=None)
+session_state = SessionState.get(is_authenticated=False, option=None, register=None, username=None,clientName=None)
 show(session_state)
 
 # Close the database connection
