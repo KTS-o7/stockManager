@@ -13,6 +13,15 @@ def show(session_state: SessionState):
     st.write("You can only access this page if you are signed in")
     st.write("You can sign in by going to the Sign In page")
     st.write("You can sign out by going to the Sign Out page")
+    # Initialize connection.
+    conn = st.connection('mysql', type='sql')
+
+    # Perform query.
+    df = conn.query('SELECT * from owner;', ttl=0)
+
+    # Print results.
+    for row in df.itertuples():
+        st.write(f"{row.name} has a {row.address},{row.phone_number}")
     
 session_state = SessionState.get()
-show(session_state)
+show(session_state) 
