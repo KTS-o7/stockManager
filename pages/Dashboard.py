@@ -61,7 +61,7 @@ def show(session_state: SessionState):
     nifty_data = yf.Ticker("^NSEI")
     nifty_info = nifty_data.info
     with col1:
-        st.metric(f"{result[0][0]}", f"{result[0][1]}", f"{result[2][2]} $")
+        st.metric(f"{result[0][0]}", f"{result[0][1]}", f"{result[0][2]} $")
         # Print all available keys
         #st.write(nifty_info.keys())
     # # If 'regularMarketPreviousClose' is in the keys, display it
@@ -70,7 +70,7 @@ def show(session_state: SessionState):
             st.metric("Current Levels","Nifty 50",f"{nifty_price} ",delta_color="off")
         
     with col2:
-        st.metric(f"{result[1][0]}", f"{result[1][1]}", f"{result[2][2]} $")
+        st.metric(f"{result[1][0]}", f"{result[1][1]}", f"{result[1][2]} $")
         if 'regularMarketPreviousClose' in nasdaq_info:
             nasdaq_price = nasdaq_info['regularMarketPreviousClose']
             st.metric("Current Levels","NASDAQ",  f"{nasdaq_price}")
