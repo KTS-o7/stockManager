@@ -1,0 +1,90 @@
+-- Create the database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS STOCKMANAGER;
+
+-- Use the STOCKMANAGER database
+USE STOCKMANAGER;
+
+-- Create the USER table
+CREATE TABLE USER (
+    UID VARCHAR(50) PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) UNIQUE NOT NULL,
+    Password VARCHAR(100) NOT NULL,
+    PhoneNumber VARCHAR(20)
+);
+
+-- Create the PORTFOLIO table
+CREATE TABLE PORTFOLIO (
+    portID VARCHAR(50) PRIMARY KEY,
+    portName VARCHAR(100) NOT NULL,
+    totalVal DECIMAL(10, 2) DEFAULT 0,
+    UID VARCHAR(50) NOT NULL,
+    FOREIGN KEY (UID) REFERENCES USER(UID)
+);
+
+-- Create the STOCK table
+CREATE TABLE STOCK (
+    stockID VARCHAR(50) PRIMARY KEY,
+    OPEN DECIMAL(10, 2) NOT NULL,
+    CLOSE DECIMAL(10, 2) NOT NULL,
+    HIGH DECIMAL(10, 2) NOT NULL,
+    LOW DECIMAL(10, 2) NOT NULL,
+    Curr DECIMAL(10,2) NOT NULL
+);
+
+-- Create the COMPANY table
+CREATE TABLE COMPANY (
+    cCode VARCHAR(10) PRIMARY KEY,
+    cName VARCHAR(100) NOT NULL,
+    cType VARCHAR(50) NOT NULL
+);
+
+-- Create the MARKET table
+CREATE TABLE MARKET (
+    mId  VARCHAR(50) PRIMARY KEY,
+    mIndex VARCHAR(50) NOT NULL,
+    tradingHours VARCHAR(50) NOT NULL
+);
+
+-- Create the HAS table
+CREATE TABLE HAS (
+    dateCreate DATE NOT NULL,
+    ownType VARCHAR(10) NOT NULL,
+    portId VARCHAR(50) NOT NULL,
+    stockId VARCHAR(50) NOT NULL,
+    PRIMARY KEY (portId, stockId),
+    FOREIGN KEY (portId) REFERENCES PORTFOLIO(portID),
+    FOREIGN KEY (stockId) REFERENCES STOCK(stockID)
+);
+
+-- Create the TRADEDBY table
+CREATE TABLE TRADEDBY (
+    cName VARCHAR(100) NOT NULL,
+    cCode VARCHAR(10) NOT NULL,
+    stockId VARCHAR(50) NOT NULL,
+    PRIMARY KEY (cCode, stockId),
+    FOREIGN KEY (cCode) REFERENCES COMPANY(cCode),
+    FOREIGN KEY (stockId) REFERENCES STOCK(stockID)
+);
+
+-- Create the TRANSACTS table
+CREATE TABLE TRANSACTS (
+    accNo VARCHAR(50) PRIMARY KEY,
+    type VARCHAR(10) NOT NULL,
+    value DECIMAL(10, 2) NOT NULL,
+    quantity INT NOT NULL,
+    timestamp DATETIME NOT NULL,
+    portId VARCHAR(50) NOT NULL,
+    stockId  VARCHAR(50) NOT NULL,
+    FOREIGN KEY (portId, stockId) REFERENCES HAS(portId, stockId)
+);
+
+-- Create the LISTS table
+CREATE TABLE LISTS (
+    timestamp DATETIME NOT NULL,
+    mId VARCHAR(50) NOT NULL,
+    cCode VARCHAR(10) NOT NULL,
+    PRIMARY KEY (mId, cCode),
+    FOREIGN KEY (mId) REFERENCES MARKET(mId),
+    FOREIGN KEY (cCode) REFERENCES COMPANY(cCode)
+);

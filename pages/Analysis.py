@@ -63,11 +63,11 @@ def main():
 
     sma = st.sidebar.checkbox("SMA")
     if sma:
-        period = st.sidebar.slider(
+        period1 = st.sidebar.slider(
             "SMA period", min_value=5, max_value=500, value=20, step=1
         )
-        data1_section[f"SMA {period}"] = data1_section[f"{asset1} Adj Close"].rolling(period).mean()
-        data2_section[f"SMA {period}"] = data2_section[f"{asset2} Adj Close"].rolling(period).mean()
+        data1_section[f"SMA {period1}"] = data1_section[f"{asset1} Adj Close"].rolling(period1).mean()
+        data2_section[f"SMA {period1}"] = data2_section[f"{asset2} Adj Close"].rolling(period1).mean()
 
     sma2 = st.sidebar.checkbox("SMA2")
     if sma2:
@@ -108,10 +108,10 @@ def main():
     
     with col1:
         st.subheader(f"{asset1} Chart")
-        st.line_chart(data1_section)
+        st.area_chart(data1_section)
     
     with col2:
         st.subheader(f"{asset2} Chart")
-        st.line_chart(data2_section)
+        st.area_chart(data2_section)
         
 main()
