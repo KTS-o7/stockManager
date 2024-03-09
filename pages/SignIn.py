@@ -122,5 +122,5 @@ session_state = SessionState.get(is_authenticated=False, option=None, register=N
 show(session_state)
 
 # Close the database connection
-print("closingConnection")
+#print("closingConnection")
 conn.close()    
