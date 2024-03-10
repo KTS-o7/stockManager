@@ -171,5 +171,5 @@ def show(session_state):
             conn.close()
 
 # Initialize session state
-session_state = SessionState.get(is_authenticated=False, option=None, register=None, username=None, clientName=None)
+session_state = SessionState.get(is_authenticated=False, option=None, register=None,username=None,clientName=None,runBT=False)
 show(session_state)
