@@ -1,6 +1,15 @@
 import pandas as pd
 import streamlit as st
 import yfinance
+from summarizer import summarize
+from pymongo.mongo_client import MongoClient
+import SessionState
+
+uri = "mongodb+srv://stockmanager:mongo@ktscluster.fnabh5x.mongodb.net/?retryWrites=true&w=majority&appName=KTSCluster"
+mongoclient = MongoClient(uri)
+
+
+st.set_page_config(layout="wide")
 
 @st.cache_data()
 def load_data():
@@ -114,4 +123,24 @@ def main():
         st.subheader(f"{asset2} Chart")
         st.area_chart(data2_section)
         
+    st.header("Notes of Analysis")
+    notes = st.text_area("Enter your notes here, we will summarize it for you !")
+    if st.button("Summarize"):
+        with st.spinner("Summarizing your notes"):
+            resp = summarize(notes)
+            #st.write(resp)
+            #print(type(resp))
+            resp = {"user":session_state.username,"summary":resp}
+            
+            #print(type(resp))
+            #st.write(resp)
+            st.write("Summary is being saved to the database")
+            with st.spinner("Saving to database"):
+                db = mongoclient["stockmanager"]
+                collection = db["analysisSummary"]
+                inserted = collection.insert_one(resp)
+                st.write("Acknowledgement",inserted.acknowledged,"Insertion ID ",inserted.inserted_id)
+            
+    
+session_state = SessionState.get(is_authenticated=False, option=None, register=None,username=None,clientName=None,runBT=False)
 main()

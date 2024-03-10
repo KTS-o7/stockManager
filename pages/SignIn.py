@@ -4,7 +4,7 @@ from passlib.hash import bcrypt
 import time
 import toml
 import mysql.connector
-
+st.set_page_config(layout="wide")
 # Load the MySQL connection details from secrets.toml
 mysql_config = {
 'user': 'mysql',
@@ -124,7 +124,7 @@ def show(session_state: SessionState):
         #st.write(f"{row[0]} - {row[1]} - {row[2]} - {row[3]}")
 
 # Call the show() function to render the content
-session_state = SessionState.get(is_authenticated=False, option=None, register=None, username=None,clientName=None)
+session_state = SessionState.get(is_authenticated=False, option=None, register=None,username=None,clientName=None,runBT=False)
 show(session_state)
 
 # Close the database connection
