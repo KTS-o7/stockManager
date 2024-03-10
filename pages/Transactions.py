@@ -4,7 +4,7 @@ from mysql.connector import Error
 import pandas as pd
 from datetime import datetime
 import SessionState
-
+st.set_page_config(layout="wide")
 # Function to establish database connection
 def connect_to_database():
     try:
@@ -63,7 +63,7 @@ def show(session_state):
     if transactions:
         #st.write(transactions)
         transactions_df = pd.DataFrame(transactions, columns=["Transaction ID", "Type", "Value", "Quantity", "Timestamp", "Portfolio", "Stock ID", "Company"])
-        st.dataframe(transactions_df,scrolling=True)
+        st.dataframe(transactions_df)
     else:
         st.info("No transactions found.")
         

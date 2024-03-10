@@ -4,7 +4,7 @@ from passlib.hash import bcrypt
 import time
 import toml
 import mysql.connector
-
+st.set_page_config(layout="wide")
 # Load the MySQL connection details from secrets.toml
 mysql_config = {
 'user': 'mysql',

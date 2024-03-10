@@ -2,6 +2,7 @@ import streamlit as st
 import SessionState
 import mysql.connector
 from mysql.connector import Error
+st.set_page_config(layout="wide")
 
 # Function to establish database connection
 def connect_to_database():
