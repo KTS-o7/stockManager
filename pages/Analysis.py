@@ -23,6 +23,9 @@ def load_quotes(asset):
     return yfinance.download(asset)
 
 def main():
+    if not session_state.is_authenticated:
+        st.error("You must be logged in to access this page.")
+        return
     col1,col2 = st.columns(2)
     components = load_data()
     title = st.empty()
