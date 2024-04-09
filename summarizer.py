@@ -1,5 +1,4 @@
 import ollama
-import asyncio
 
 def summarize(paragraph:str):
     client = ollama.Client(host='http://localhost:11434')
