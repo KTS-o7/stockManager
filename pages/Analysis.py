@@ -5,7 +5,8 @@ from summarizer import summarize
 from pymongo.mongo_client import MongoClient
 import SessionState
 
-uri = "mongodb+srv://stockmanager:mongo@ktscluster.fnabh5x.mongodb.net/?retryWrites=true&w=majority&appName=KTSCluster"
+uri = st.secrets["mongodbAPI"]["uri"]
+print(uri)
 mongoclient = MongoClient(uri)
 
 
